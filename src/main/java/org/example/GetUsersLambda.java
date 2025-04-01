@@ -2,6 +2,8 @@ package org.example;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
+import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
 import software.amazon.awssdk.services.dynamodb.model.*;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 
@@ -10,14 +12,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GetUsersLambda implements RequestHandler<Object, List<Map<String, String>>> {
+public class GetUsersLambda implements RequestHandler<APIGatewayV2HTTPEvent, APIGatewayV2HTTPResponse> {
 
     private static final String TABLE_NAME = "users";
 
     private final DynamoDbClient dynamoDbClient = DynamoDbClient.create();
 
     @Override
-    public List<Map<String, String>> handleRequest(Object input, Context context) {
+    public APIGatewayV2HTTPResponse handleRequest(APIGatewayV2HTTPEvent event, Context context) {
         List<Map<String, String>> users = new ArrayList<>();
 
         // Construct scan request
@@ -46,10 +48,24 @@ public class GetUsersLambda implements RequestHandler<Object, List<Map<String, S
                 }
                 users.add(user);
             }
+
+            // Check if any users are returned
+            if (users.isEmpty()) {
+                return createResponse(404, "{\"message\": \"No users found\"}");
+            }
+
         } catch (Exception e) {
-            System.err.println("Error scanning the DynamoDB table: " + e.getMessage());
+            return createResponse(500, "{\"message\": \"Failed to retrieve users. Error: " + e.getMessage() + "\"}");
         }
 
-        return users;
+        return createResponse(200, "{\"users\": " + users + "}");
+    }
+
+    // Helper method to create an API Gateway response
+    private APIGatewayV2HTTPResponse createResponse(int statusCode, String body) {
+        APIGatewayV2HTTPResponse response = new APIGatewayV2HTTPResponse();
+        response.setStatusCode(statusCode);
+        response.setBody(body);
+        return response;
     }
 }

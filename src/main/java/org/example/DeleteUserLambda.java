@@ -4,7 +4,6 @@ import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayV2HTTPResponse;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
 import software.amazon.awssdk.services.dynamodb.model.AttributeValue;
 import software.amazon.awssdk.services.dynamodb.model.DeleteItemRequest;
@@ -17,7 +16,6 @@ public class DeleteUserLambda implements RequestHandler<APIGatewayV2HTTPEvent, A
     // DynamoDB client
     private final DynamoDbClient dynamoDbClient = DynamoDbClient.create();
     private static final String TABLE_NAME = "users";  // DynamoDB table name
-    private final ObjectMapper objectMapper = new ObjectMapper(); // Jackson ObjectMapper for JSON parsing
 
     public APIGatewayV2HTTPResponse handleRequest(APIGatewayV2HTTPEvent event, Context context) {
         // Extract path parameter userId from the event
