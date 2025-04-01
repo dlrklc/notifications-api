@@ -2,7 +2,6 @@ package org.example;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import software.amazon.awssdk.services.dynamodb.DynamoDbClient;
@@ -26,6 +25,10 @@ public class UpdateUserLambda implements RequestHandler<APIGatewayV2HTTPEvent, A
 
         // Extract path parameter userId from the event
         String userId = event.getPathParameters().get("userId");  // Extract userId path parameter
+        if (userId == null || userId.isEmpty()) {
+            return createResponse(400, "{\"message\": \"userId must be provided\"}");
+        }
+
         String requestBody = event.getBody();  // Extract the body of the request
 
         String phoneNumber = extractPhoneNumber(requestBody);
