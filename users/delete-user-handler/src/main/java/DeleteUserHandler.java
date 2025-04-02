@@ -10,7 +10,7 @@ import software.amazon.awssdk.services.dynamodb.model.DynamoDbException;
 
 import java.util.Map;
 
-public class DeleteUserLambda implements RequestHandler<APIGatewayV2HTTPEvent, APIGatewayV2HTTPResponse> {
+public class DeleteUserHandler implements RequestHandler<APIGatewayV2HTTPEvent, APIGatewayV2HTTPResponse> {
     // DynamoDB client
     private final DynamoDbClient dynamoDbClient = DynamoDbClient.create();
     private static final String TABLE_NAME = "users";  // DynamoDB table name

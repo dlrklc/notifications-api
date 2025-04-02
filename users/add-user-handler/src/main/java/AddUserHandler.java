@@ -14,7 +14,7 @@ import java.util.Map;
 
 import java.util.UUID;
 
-public class AddUserLambda implements RequestHandler<APIGatewayV2HTTPEvent, APIGatewayV2HTTPResponse> {
+public class AddUserHandler implements RequestHandler<APIGatewayV2HTTPEvent, APIGatewayV2HTTPResponse> {
     // DynamoDB client
     private final DynamoDbClient dynamoDbClient = DynamoDbClient.create();
     private static final String TABLE_NAME = "users";  // DynamoDB table name

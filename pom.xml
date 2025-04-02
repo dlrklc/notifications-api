@@ -13,6 +13,7 @@
         <module>users/add-user-handler</module>
         <module>users/update-user-handler</module>
         <module>users/delete-user-handler</module>
+        <module>notifications/get-notifications-handler</module>
     </modules>
 
     <properties>
