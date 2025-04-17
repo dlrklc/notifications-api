@@ -7,5 +7,5 @@ This Serverless REST API allows sending notifications to users according to thei
 - AWS API Gateway + Lambda
 - AWS DynamoDB
 - AWS CloudWatch
-- Spring Boot
+- Java
 - Cron jobs
